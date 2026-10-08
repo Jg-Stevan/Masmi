@@ -84,7 +84,7 @@ GITHUB_TOKEN="VALOR_TOKEN" GITHUB_REPO="valor/de-repo" python3 /tmp/sync_github.
 
 ```
 REPO = "Jg-Stevan/memoria-tesoreria"
-TOKEN = "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"
+TOKEN = "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"
 ```
 
 Estos dos valores son los que se pasan como `GITHUB_REPO` y `GITHUB_TOKEN` en el comando.
