@@ -80,7 +80,7 @@ GITHUB_TOKEN="VALOR_TOKEN" GITHUB_REPO="valor/de-repo" python3 /tmp/sync_github.
 
 ---
 
-## CONFIGURACIÓN (el usuario completa estos dos valores)
+## CONFIGURACIÓN (configurada el 2026-10-08 — si rotas el token o cambias de repo, actualiza SOLO estos dos valores)
 
 ```
 REPO = "Jg-Stevan/memoria-tesoreria"

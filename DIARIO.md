@@ -86,3 +86,11 @@ Pedido: el usuario pidió las instrucciones para que SU agente realice la config
 Qué se hizo: SYNC-GITHUB.md a v1.1 — REPO ahora viaja por variable de entorno GITHUB_REPO (el script ya no lo tiene en el código: una sola fuente de configuración, la sección CONFIGURACIÓN) y nueva sección PUESTA EN MARCHA con tres partes: (A) pasos manuales del usuario en el navegador (repo privado + token fine-grained), (B) bloque de instrucción listo para pegar en un chat con ejecución de código (extrae ZIP → configura → re-zipea → prueba push → prueba pull → reporta, con diagnóstico 401/404/403 y reglas innegociables del token), (C) después: ZIP configurado es el de la usuaria, recordatorio de rotación a los 85 días, revocación inmediata si algo raro.
 Verificación: sintaxis del script validada (py_compile) y mensajes de error sin GITHUB_REPO/GITHUB_TOKEN probados.
 Pendiente: que el usuario ejecute la Puesta en marcha con su agente; primera sesión real de ella con push al repo.
+
+---
+
+### Entrada 8 — 2026-10-08 | Sincronización GitHub configurada y probada (primera sesión con repo real)
+Pedido: el usuario pegó en esta sesión los dos valores reales (repo y token) para que este agente hiciera la puesta en marcha completa él mismo.
+Qué se hizo: se escribieron los valores reales en la sección CONFIGURACIÓN de SYNC-GITHUB.md (el token vive SOLO ahí — jamás impreso en respuestas, diario ni logs); se re-empaquetó memoria-portatil.zip configurado (el que viaja con la usuaria); push real del kit completo al repo privado y prueba de pull.
+Verificación: push aceptado por GitHub con los 12 archivos (link del commit en la respuesta de la sesión); pull respondió "ya estaba igual"; escaneo de fuga: el token aparece únicamente en SYNC-GITHUB.md, en ningún otro archivo ni salida.
+Siguiente paso: la próxima sesión de la usuaria arranca con pull (bajar mejoras del usuario) y cierra con push (paso 6 del ritual). Recordatorio: rotar el token a los 85 días (expira a los 90).
