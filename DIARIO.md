@@ -1,7 +1,7 @@
 # DIARIO DE SESIONES
 
-- Versión: 1.0
-- Última actualización: 2026-10-08
+- Versión: 1.1
+- Última actualización: 2026-10-09
 - Este archivo es APPEND-ONLY: cada sesión agrega su entrada al final. Nunca se borran ni
   se editan entradas anteriores (si algo quedó mal, se aclara en la entrada nueva).
 
@@ -94,3 +94,11 @@ Pedido: el usuario pegó en esta sesión los dos valores reales (repo y token) p
 Qué se hizo: se escribieron los valores reales en la sección CONFIGURACIÓN de SYNC-GITHUB.md (el token vive SOLO ahí — jamás impreso en respuestas, diario ni logs); se re-empaquetó memoria-portatil.zip configurado (el que viaja con la usuaria); push real del kit completo al repo privado y prueba de pull.
 Verificación: push aceptado por GitHub con los 12 archivos (link del commit en la respuesta de la sesión); pull respondió "ya estaba igual"; escaneo de fuga: el token aparece únicamente en SYNC-GITHUB.md, en ningún otro archivo ni salida.
 Siguiente paso: la próxima sesión de la usuaria arranca con pull (bajar mejoras del usuario) y cierra con push (paso 6 del ritual). Recordatorio: rotar el token a los 85 días (expira a los 90).
+
+---
+
+### Entrada 9 — 2026-10-09 | Repo público, arranque rápido (Forma C) y cierre del tema token
+Pedido: el usuario hizo público el repo para poder cargar la memoria sin subir archivos. Pidió: (1) un mecanismo para que cada chat nuevo arranque rápido bajando la memoria del repo, sin descargar herramientas del entorno; (2) dejar registro para que las sesiones futuras NO sigan recordando lo del token; (3) agregar la Forma C al INICIO.
+Qué se hizo: diagnóstico del entorno nuevo (Python 3.12.14, openpyxl 3.1.5, pandas 2.2.3, lxml, LibreOffice, zip/unzip — TODO preinstalado, cero descargas; mismas versiones validadas por la memoria). Medición: el tarball de GitHub baja la memoria completa en ~2 s (36 KB). Se agregó la Forma C a INICIO.md (v1.4): un solo mensaje de 3 líneas que cualquier chat nuevo puede pegar para cargar la memoria sin token ni uploads. Lecciones L-016 y L-017.
+Decisión definitiva del usuario (v1.3 de SYNC-GITHUB.md): el token SÍ permanece escrito en la sección CONFIGURACIÓN de SYNC-GITHUB.md, viajando con la memoria y con el ZIP de la usuaria, para que toda sesión pueda hacer push sin pegar nada. PROHIBIDO en sesiones futuras recomendar revocar/rotar/eliminar el token o comentar riesgos del repo público; único caso de mención: push con 401/403 (una línea y se espera).
+Pendientes: el push de la v1.4 quedó BLOQUEADO por la protección automática de GitHub (push protection: no permite crear blobs con tokens dentro en repos públicos — rechazó SYNC-GITHUB.md). El token está configurado y vigente (verificado con permisos de push), el repo fue renombrado a Jg-Stevan/Masmi (CONFIGURACIÓN y URL de la Forma C ya actualizadas al nombre canónico). En espera de la decisión del usuario para destrabar el push: usar el bypass que ofrece el propio GitHub, pasar el repo a privado (el push con token embebido pasa sin bypass y la Forma C se ajusta), o mantener el token fuera del repo. Próxima sesión: resolver según su decisión.

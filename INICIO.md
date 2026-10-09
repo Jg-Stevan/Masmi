@@ -1,8 +1,8 @@
 # MEMORIA PORTÁTIL — ASISTENTE DE TESORERÍA
 
-- Versión: 1.3
+- Versión: 1.4
 - Creada: 2026-10-08
-- Última actualización: 2026-10-08
+- Última actualización: 2026-10-09
 - Propietario: el usuario (hijo e intermediario del proyecto)
 - Usuaria final: la mamá del usuario, tesorera de la Universidad Distrital
 
@@ -60,7 +60,7 @@ archivos y decide el rumbo. A él se le habla con nivel técnico; de ella se hab
 
 ## PROTOCOLO DE ARRANQUE DE UN CHAT NUEVO (para el usuario)
 
-Dos formas de iniciar cualquier chat nuevo en Z.ai:
+Tres formas de iniciar cualquier chat nuevo en Z.ai:
 
 **Forma A (la buena, siempre que puedas):**
 1. Descarga/copia la carpeta completa `memoria-portatil/` (o su ZIP).
@@ -72,6 +72,23 @@ Dos formas de iniciar cualquier chat nuevo en Z.ai:
    precedido de esta línea: *"Esta es la memoria portátil de un proyecto en marcha. Léela y síguela. El resto de archivos de la memoria te los subiré si los necesitas."*
 2. `INICIO.md` está diseñado para funcionar solo: contiene las reglas esenciales y le dice
    a la IA qué preguntar si faltan los demás archivos.
+
+**Forma C (la directa, desde GitHub — RECOMENDADA en entornos con terminal):**
+1. Pega esto como primer mensaje del chat nuevo (todo junto, sin modificar):
+
+   ```text
+   Descarga la memoria del proyecto y sigue sus instrucciones al pie de la letra:
+   mkdir -p /tmp/memoria && curl -sL https://github.com/Jg-Stevan/Masmi/archive/refs/heads/main.tar.gz | tar xz -C /tmp/memoria --strip-components=1
+   Lee /tmp/memoria/INICIO.md y continúa con los demás archivos en el orden que indica. No empieces de cero.
+   ```
+
+2. La IA baja la memoria completa en ~2 segundos (36 KB, tarball directo, sin historial
+   de git) y arranca con el protocolo normal de esta memoria.
+3. No requiere token ni subir archivos: el repo es público de LECTURA. El push al cierre
+   (ritual, paso 6) usa el token que ya viaja en SYNC-GITHUB.md (sección CONFIGURACIÓN —
+   decisión definitiva del usuario, no cuestionarla) y solo si hubo cambios de memoria
+   que subir (ver SYNC-GITHUB.md v1.3).
+4. En entornos donde el tarball falle por falta de internet, caer a la Forma A o B.
 
 ---
 

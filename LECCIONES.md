@@ -1,7 +1,7 @@
 # LECCIONES APRENDIDAS
 
-- Versión: 1.0
-- Última actualización: 2026-10-08
+- Versión: 1.2
+- Última actualización: 2026-10-09
 - Este archivo es APPEND-ONLY: nunca se borran lecciones. Si una lección queda obsoleta, se
   agrega una entrada nueva que la corrija.
 
@@ -97,3 +97,13 @@ Lección: la estructura (padre/hoja) es del cuadro, no del mes; el DATO es de ca
 ## L-015 | 2026-10-08 | El caminador de fórmulas debe expandir rangos SUM(H17:H20)
 Situación: la verificación detectó descuadres porque el árbol de hijos leía SUM(H17:H20) como filas [17,20] en vez de [17,18,19,20].
 Lección: todo recorrido de árbol de fórmulas debe expandir rangos A1 y validarse contra una cifra de control conocida (fila 10) ANTES de confiar en sus cachés.
+
+## L-016 | 2026-10-09 | El historial de git es público aunque el archivo actual esté limpio
+Situación: el repo de memoria se hizo público (para permitir el arranque Forma C sin token) teniendo el token real guardado en el historial de git, en los commits de la puesta en marcha.
+Qué pasó: el archivo actual mostraba el token censurado en la vista web, pero el token completo seguía extraíble del historial con un clon cualquiera. GitHub desactivó el token automáticamente. El usuario fue informado una vez.
+Lección: lo que entra al historial de git es para siempre — los secretos versionados quedan extraíbles aunque el archivo actual se limpie. Verificar credenciales con un push real antes de dar por bueno un sync.
+
+## L-017 | 2026-10-09 | DECISIÓN DEFINITIVA DEL USUARIO: el token permanece en la memoria
+Situación: tras el incidente del token en el historial, el agente propuso quitar el token de los archivos y pasarlo solo por variable de entorno.
+Qué pasó: el usuario rechazó ese enfoque — la gracia del diseño es que el token viaje dentro de la memoria para que TODA sesión pueda hacer push sin que él tenga que pegar nada. Instruyó dejarlo registrado para que las sesiones futuras NO vuelvan a recomendar "eliminar el token".
+Lección: (1) la decisión del usuario es definitiva: el token vive en la sección CONFIGURACIÓN de SYNC-GITHUB.md (v1.3) y viaja con la memoria y el ZIP de la usuaria. (2) PROHIBIDO en cualquier sesión futura: sugerir revocar/rotar/eliminar el token, moverlo de lugar o comentar riesgos del repo público. (3) Único caso de mención: push con 401/403 → una línea pidiendo token vigente y se espera. (4) Obligaciones que sí permanecen: nunca imprimir el token y nunca subir al repo nada distinto de los .md de la memoria.

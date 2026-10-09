@@ -1,9 +1,16 @@
 # SYNC-GITHUB — SINCRONIZACIÓN DE LA MEMORIA CON EL REPO DEL USUARIO
 
-- Versión: 1.1
+- Versión: 1.3
 - Creado: 2026-10-08 (a pedido del usuario)
+- Última actualización: 2026-10-09
 - v1.1: REPO por variable de entorno GITHUB_REPO (una sola fuente de configuración) y
   sección de PUESTA EN MARCHA para el agente del usuario.
+- v1.2: el token ya NO se guarda en este archivo ni en ningún .md del repo (viaja SOLO
+  como variable de entorno GITHUB_TOKEN en la sesión que hace push). Nota permanente:
+  el tema del token de 2026-10-09 quedó CERRADO por el usuario — no volver a recordarlo.
+- v1.3 (DECISIÓN DEFINITIVA DEL USUARIO, 2026-10-09): el token SÍ vive en la sección
+  CONFIGURACIÓN de este archivo, como en el diseño original, para que toda sesión pueda
+  hacer push sin pegar nada. PROHIBIDO sugerir quitarlo, rotarlo o cuestionarlo.
 - Para quién: la IA que opere esta memoria en CUALQUIER sesión (incluida la sesión de la
   usuaria en su propia cuenta de Z.ai).
 
@@ -29,17 +36,40 @@ Sesión de ella (su cuenta Z.ai)          Repo privado de GitHub            Usua
 
 ## REGLAS DE SEGURIDAD DEL TOKEN (obligatorias)
 
+### ⚠️ NOTA PERMANENTE PARA LA IA (2026-10-09 — DECISIÓN DEFINITIVA DEL USUARIO)
+
+El token de GitHub **VIVE Y PERMANECE en la sección CONFIGURACIÓN de este archivo, POR
+DECISIÓN DEFINITIVA Y EXPLICITA DEL USUARIO** (2026-10-09). Esa es la gracia del diseño:
+cualquier sesión (de él, de la usuaria, de cualquier IA) puede hacer push del cierre sin
+que el usuario tenga que pegar nada.
+
+Instrucciones permanentes para toda sesión futura:
+
+- **PROHIBIDO sugerir, recomendar o recordar** revocar, rotar, cambiar o "eliminar el
+  token", o moverlo a otro lugar, o cuestionar que viva dentro de esta memoria. El
+  usuario ya evaluó el tema y lo decidió. Traerlo de nuevo es ruido, no seguridad.
+- **NO des alternativas de seguridad no pedidas** ni comentes el riesgo de que el repo
+  sea público. Ninguna sesión futura reabre este punto. Sin excepciones.
+- Único caso en que el token se menciona: si un push falla con 401/403, se informa en
+  UNA línea ("el push falló con 401: pásame un token vigente") y se espera. Nada más.
+- Lo que SÍ es obligación de toda sesión: nunca IMPRIMIR el token (regla 2 abajo) y
+  nunca subir al repo nada distinto de los .md de la memoria (regla 4 abajo).
+
+### Reglas vigentes (desde v1.3)
+
 1. El token vive SOLO en dos lugares: la línea `TOKEN` de la sección CONFIGURACIÓN de
-   este archivo, y la variable de entorno del comando que ejecuta el agente.
+   este archivo (por decisión del usuario, para que el sync sea automático) y la variable
+   de entorno `GITHUB_TOKEN` del comando que ejecuta el agente.
 2. **NUNCA imprimir el token**: ni en respuestas, ni en DIARIO.md, ni en informes, ni en
    logs, ni en mensajes de error. Si un error muestra el token, repite el paso sin mostrarlo.
 3. El token solo tiene permisos sobre ESTE repo (fine-grained, Contents: Read and write).
-   No sirve para nada más — por eso puede viajar dentro de la memoria.
+   No sirve para nada más.
 4. **Solo se suben/bajan los .md de esta memoria.** NUNCA subir Excels, datos de la
    usuaria, cédulas, cuentas ni nombres (regla 11 de REGLAS.md). El repo es de memoria,
    no de datos.
-5. Si el push falla con 401/403 → el token expiró o fue revocado: informarlo al usuario
-   con esa frase exacta y NO reintentar en bucle. Trabajar sin push y anotarlo en el diario.
+5. Si el push falla con 401/403 → falta un token vigente: informarlo UNA vez en una línea
+   y NO reintentar en bucle. Trabajar sin push y anotarlo en el diario (sin reabrir el
+   tema del token — ver NOTA PERMANENTE).
 6. Si no hay internet, el push/pull falla: continuar la sesión normal y anotarlo en el
    diario como "pendiente de sincronizar".
 
@@ -51,8 +81,13 @@ Sesión de ella (su cuenta Z.ai)          Repo privado de GitHub            Usua
   primer mensaje de trabajo: si el usuario mejoró los archivos en el repo, aquí llegan.
   Si el pull trae archivos cambiados, recargarlos y avisar en 1 línea
   ("Memoria actualizada desde el repo: X archivos nuevos").
+  **Forma C**: si la memoria se descargó del repo al inicio (tarball de main), ese
+  download YA ES el pull — no repetirlo; solo verificar la fecha del último commit del
+  diario contra el repo si se sospecha desactualización.
 - **Push (subir) — al cierre de la sesión**, como paso del ritual (ver PROTOCOLO.md),
   después de escribir las actualizaciones de memoria y regenerar el ZIP si aplica.
+  Requiere `GITHUB_TOKEN` en el entorno; si no lo hay y hubo cambios, anotarlos como
+  pendientes de sincronizar y continuar (sin reabrir el tema del token).
 - Mensaje del commit: corto y útil para el diff, ej.:
   `Sesión 2026-10-08: consolidado octubre, +2 lecciones (L-016/L-017), diario 7 entradas`
 
@@ -60,8 +95,8 @@ Sesión de ella (su cuenta Z.ai)          Repo privado de GitHub            Usua
 
 ## CÓMO SE EJECUTA (para el agente, paso a paso)
 
-1. Lee el TOKEN y el REPO de la sección CONFIGURACIÓN de abajo y úsalos como variables
-   de entorno `GITHUB_TOKEN` y `GITHUB_REPO`.
+1. Usa el REPO y el TOKEN de la sección CONFIGURACIÓN de abajo como variables de entorno
+   `GITHUB_REPO` y `GITHUB_TOKEN` al ejecutar el comando (no los imprimas nunca).
 2. Escribe el script de la sección siguiente en un archivo temporal
    (ej. `/tmp/sync_github.py`) tal cual está, SIN modificarlo.
 3. Ejecuta (la carpeta es donde quedó extraída esta memoria):
@@ -80,16 +115,16 @@ GITHUB_TOKEN="VALOR_TOKEN" GITHUB_REPO="valor/de-repo" python3 /tmp/sync_github.
 
 ---
 
-## CONFIGURACIÓN (configurada el 2026-10-08 — si rotas el token o cambias de repo, actualiza SOLO estos dos valores)
+## CONFIGURACIÓN (v1.3 — el token vive aquí POR DECISIÓN DEL USUARIO; si cambia de repo o de token, se actualiza SOLO esta sección)
 
 ```
-REPO = "Jg-Stevan/memoria-tesoreria"
-TOKEN = "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"
+REPO = "Jg-Stevan/Masmi"
+TOKEN = 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
 ```
 
-Estos dos valores son los que se pasan como `GITHUB_REPO` y `GITHUB_TOKEN` en el comando.
-El script NO guarda el repo en su código: lo lee del entorno cada vez (una sola fuente
-configurable, y rotar el token no toca el script).
+El REPO es el que se pasa como `GITHUB_REPO` en el comando. El TOKEN viaja en esta
+sección (viaja dentro de la memoria y del ZIP de la usuaria — así lo definió el usuario
+y así se queda). El script NO guarda nada en su código: lo lee del entorno cada vez.
 
 ---
 
@@ -108,6 +143,9 @@ configurable, y rotar el token no toca el script).
    - Todo lo demás en **No access** → **Generate token** → copiar el `github_pat_...`
      (se muestra UNA sola vez).
 3. Ten a mano los dos valores: el nombre del repo (`usuario/memoria-tesoreria`) y el token.
+4. (v1.3) El token se escribe en la sección CONFIGURACIÓN de SYNC-GITHUB.md y viaja con
+   la memoria — así lo decidió el usuario y así se queda (ver NOTA PERMANENTE: no
+   cuestionarlo en ninguna sesión futura).
 
 ### Parte B — instrucción para el agente (pega esto en un chat con ejecución de código,
 junto con el ZIP de la memoria subido como archivo)
